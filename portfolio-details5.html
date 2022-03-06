@@ -102,10 +102,10 @@
       <div class="container">
 
         <div class="d-flex justify-content-between align-items-center">
-          <h2>Week 5: 3d Printing!</h2>
+          <h2>Week 4: Programming!</h2>
           <ol>
             <li><a href="index.html">Home</a></li>
-            <li>Week 5: 3d Printing!</li>
+            <li>Week 4: Programming!</li>
           </ol>
         </div>
 
@@ -121,37 +121,6 @@
           <div class="col-lg-8">
             <div class="portfolio-details-slider swiper">
               <div class="swiper-wrapper align-items-center">
-
-                <div class="swiper-slide">
-                  <img src="assets/3dprinting/bee.jpg" alt="">
-                </div>
-
-                <div class="swiper-slide">
-            
-                  <img src="assets/3dprinting/bumble.jpg" alt="">
-                </div>
-
-                <div class="swiper-slide">
-                  <img src="assets/3dprinting/bumblebee.jpg" alt="">
-
-                  <!-- <img src="assets/intro1/dressfinal.mov" alt=""> -->
-                </div>
-                <div class="swiper-slide">
-                  <img src="assets/3dprinting/bbfusion.png" alt="">
-
-                  <!-- <img src="assets/intro1/dressfinal.mov" alt=""> -->
-                </div>
-                <div class="swiper-slide">
-                  <img src="assets/3dprinting/bbfusion2.png" alt="">
-
-                  <!-- <img src="assets/intro1/dressfinal.mov" alt=""> -->
-                </div>
-                <div class="swiper-slide">
-                  <img src="assets/3dprinting/bbfusion3.png" alt="">
-
-                  <!-- <img src="assets/intro1/dressfinal.mov" alt=""> -->
-                </div>
-               
               </div>
               <div class="swiper-pagination"></div>
             </div>
@@ -170,40 +139,79 @@
             </div> --> 
             <div>
             <div class="portfolio-description">
-              <h2>3d Printing, Prusa, and more.</h2>
+              <h2>Programming my jewlery shelf to rotate slowly.</h2>
               <p>
-                For this week,I learned how to use the 3d printers, and the Prusa slicer software. Because I wanted to get familiarity with the printers as well as prototype designs for my final project, I decided to focus on earrings that I might include in my final project.</p>
+                For this week, I decided to improve upon my jewelry shelf by rotating it a fixed speed, determined first by the outputs of the potentiometer, and then by custom code that rotated the shelf in the following way.</p>
               <br>
-              <h4> Object 1: <i> Tree Earrings (Geometric)</i></h4>
-              <li>  For these first pair of earrings, I wanted to make sure prusa would be able to print earrings at a reasonable size well. This turned out fairly successful! However, since my print was overnight, I came back to retrieve my tree earrings, and someone had moved them off the plate. Because it does not look like the printer failed, and likely someone was impatient and broke my earrings as they removed them from the plate, I consider this first print a success. I am still thinking on how I would attach speakers to these without drastically increasing the weight to an unbearable amount. However, I am still glad that I was able to make these and they printed out very nicely. In the future, I would hope to make more thematic designs and maybe even make speaker shaped lightweight and hollow earrings to fit whatever electronic components are needed.</li>
-              <h4> Object 2: <i> Bumble bee earring, Fusion Design</i></h4>
-              <li>  For the second pair of earrings, I desinged in fusion a bumble bee like earring which hangs upside down, and then translated those designs to prusa. This was another great learning exercise in both manipulating sketches on fusion to make wearable 3d printable art, and also thinking about what items/objects are related to sound (like the buzz of a bee) and would make sense in my project of wearable fashion tech. I also had to remove the supports for this object, which was honestly really scary! Figuring out how to get those suprisingly sturfy supports removed without damaging the bofy of the earring itself was a bit difficult. but luckily I figured it out with the help of other members in the lab.</li>
-              <h4> Object Printability <i> Bumble bee earring and Tree Earrings </h4>
-              <li> When thinking about 3d printing these designs, I wanted to make sure it would be something that could not be easily made via the laser printer or the handsaws/etc. This would mean that the objects would have to be complex in shape (not be 2d or simply 2d objects built upon each other), and would also need to have intricate 3d details, (like the geometric pattern in the tree earrings or the eyes and wings of the bumble bee ones) that would make them nearly impossible to make any other way. In fact, although you coulf make similar but simpler designs with the laser cutter, I wholeheartedly believe that both of these items could only truly be made with the 3d printers. </li>
-    <br>
-    <a download href='/Users/shavonnajackson/Documents/GitHub/PHYSCI-70/assets/3dprinting/Tree_Earrings.stl'> Download my STL file  for Tree Earrings!
-                <br>
-                <a download href='/Users/shavonnajackson/Documents/GitHub/PHYSCI-70/assets/3dprinting/FlyEarring.stl'> Download my STL file  for Bee Earrings! </a>
-<br>
-              <div class="portfolio-details-slider swiper">
+              <video width="400" controls>
+                <source src="/Users/shavonnajackson/Documents/GitHub/PHYSCI-70/assets/week4/programming.mp4"type=video/mp4>
+              </video>
+           
+                <!-- <img src="assets/intro1/dojafinal.mov" alt=""> -->
+              <h4> First step: Learning how fast I want the jewlery stand to spin with the potentiometer</i></h4>
+              <li>  For the first step, I used my computer as an output devide and the motor's spinning speed was displayed depending on what value the potentiometer was at. This was recorded with the following code, which allowed me to create a new program with this approximate number in mind. By determining this spinning speed, this code allowed me to remove the potentiometer entriely from my setup and only use my written code to power my arduiono board and thus my jewlery shelf.</li>
+             <br>
+             <pre>
+                <code>  void setup() {
+              pinMode(3, OUTPUT);
+              pinMode(A0, OUTPUT);  //This will be GND for the potentiometer
+              pinMode(A4, OUTPUT);  //This will be 3.3V for the pot
+            
+              digitalWrite(A0, LOW);
+              digitalWrite(A4, HIGH);
+                // initialize serial communication at 9600 bits per second:
+              Serial.begin(9600);
+            }
+            
+            void loop() {
+              int pot_value = analogRead(A2);   //pot wiper is on A2
+              int motor_speed = map(pot_value, 0, 1023, 255, 0); // map motor_level to pot_value so that zero corresponds to lowest speed
+              analogWrite(3, motor_speed);
+              delay(1);
+            
+              // print out the value you read:
+              Serial.println(pot_value);
+            }</code>
+            </pre>
+              <h4> For the second part, I wrote a code to then take the value we obtained from the potentiometer code, and use that as the new rotating speed of the shelf.</h4>
+              <li> As I previously mentioned, the first code I wrote was only really to figure out what input I would need to power my jewerly shelf at the speed I desired. Once I obtained this speed, I then was able to put it into a new code where I controlled the speed of the shelf. After successfully figuring out this code, I then began to experiment with it, by adding buttons to control directoin, and some to act as on/off switches. The resulting final code uses buttons to control the direction, but the speed is fixed at the value's we were able to obtain from part one. The code is below.</li>
+              <pre>
+
+              <code> 
+                bool dir = LOW;
                 
-                <div class="swiper-slide">
-                <img src="assets/3dprinting/tree.jpg" alt="">
-
-                <!-- <img src="assets/intro1/dressfinal.mov" alt=""> -->
-              </div>
-              <div class="swiper-slide">
-                <img src="assets/3dprinting/treebroken.jpg" alt="">
-
-                <!-- <img src="assets/intro1/dressfinal.mov" alt=""> -->
-              </div>
-
-              </div>
-              <h4> Scanned Item <i> Pill Bottle </h4>
-                <li> I just decided to scan a bottle of vitamins I had lying around with my phone. Here is the bottle, I couldn't figure out how to add the 3d scan without paying a fee. However, the app I used was Scandy, but after the scan it prompted me to pay a fee in order to save the scan. So, here is an ordinary picture of the bottle for reference. This was a great learning experience! I wish it wasn't so costly to save the scans we do on this app. </li>
-                <img src="assets/3dprinting/1mg.png" alt="">
-
-            </div>
+                void setup() {
+                  // put your setup code here, to run once:
+                  pinMode(2, INPUT_PULLUP);
+                  pinMode(5, INPUT_PULLUP);
+                  pinMode(3, OUTPUT);
+                  pinMode(4, OUTPUT);
+                  analogWrite(3, 0);   // start with the motors off 
+                  digitalWrite(4, LOW);
+                }
+                
+                void loop() {
+                  // put your main code here, to run repeatedly:
+                  int sensorVal = digitalRead(2);
+                  int button2 = digitalRead(5);
+                  delay(1);
+                
+                   if (sensorVal == LOW) {
+                    analogWrite(3, 190); 
+                //    digitalWrite(4, HIGH);
+                  } else {
+                    analogWrite(3, 0);
+                  }
+                    if (button2 == LOW) {
+                   digitalWrite(4, HIGH);  // switch direction
+                   analogWrite(3, 255-190); // here the logic for speed is inverted   
+                  } else {
+                   digitalWrite(4, LOW);
+                
+                  }
+                }</code>
+              </pre>
+              
           </div>
 
         </div>
