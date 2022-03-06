@@ -102,10 +102,10 @@
       <div class="container">
 
         <div class="d-flex justify-content-between align-items-center">
-          <h2>Week 4: Programming!</h2>
+          <h2>Week 3: Moving Sculpture!</h2>
           <ol>
             <li><a href="index.html">Home</a></li>
-            <li>Week 4: Programming!</li>
+            <li>Week 3: Moving Sculpture!</li>
           </ol>
         </div>
 
@@ -139,79 +139,49 @@
             </div> --> 
             <div>
             <div class="portfolio-description">
-              <h2>Programming my jewlery shelf to rotate slowly.</h2>
+              <h2>Making a rotating jewelry stand!</h2>
               <p>
-                For this week, I decided to improve upon my jewelry shelf by rotating it a fixed speed, determined first by the outputs of the potentiometer, and then by custom code that rotated the shelf in the following way.</p>
+                For this week, I wanted to make a stand that would slowly revolve and hold all ym jewlery and accessories. Although this was a journey, and the final product definitely spins way too fast, it works! The video for it is pictured below.
+              </p>
               <br>
               <video width="400" controls>
-                <source src="/Users/shavonnajackson/Documents/GitHub/PHYSCI-70/assets/week4/programming.mp4"type=video/mp4>
+                <source src="/Users/shavonnajackson/Documents/GitHub/PHYSCI-70/assets/week3/spinning.mp4"type=video/mp4>
               </video>
            
                 <!-- <img src="assets/intro1/dojafinal.mov" alt=""> -->
-              <h4> First step: Learning how fast I want the jewlery stand to spin with the potentiometer</i></h4>
-              <li>  For the first step, I used my computer as an output devide and the motor's spinning speed was displayed depending on what value the potentiometer was at. This was recorded with the following code, which allowed me to create a new program with this approximate number in mind. By determining this spinning speed, this code allowed me to remove the potentiometer entriely from my setup and only use my written code to power my arduiono board and thus my jewlery shelf.</li>
-             <br>
-             <pre>
-                <code>  void setup() {
-              pinMode(3, OUTPUT);
-              pinMode(A0, OUTPUT);  //This will be GND for the potentiometer
-              pinMode(A4, OUTPUT);  //This will be 3.3V for the pot
-            
-              digitalWrite(A0, LOW);
-              digitalWrite(A4, HIGH);
-                // initialize serial communication at 9600 bits per second:
-              Serial.begin(9600);
-            }
-            
-            void loop() {
-              int pot_value = analogRead(A2);   //pot wiper is on A2
-              int motor_speed = map(pot_value, 0, 1023, 255, 0); // map motor_level to pot_value so that zero corresponds to lowest speed
-              analogWrite(3, motor_speed);
-              delay(1);
-            
-              // print out the value you read:
-              Serial.println(pot_value);
-            }</code>
-            </pre>
-              <h4> For the second part, I wrote a code to then take the value we obtained from the potentiometer code, and use that as the new rotating speed of the shelf.</h4>
-              <li> As I previously mentioned, the first code I wrote was only really to figure out what input I would need to power my jewerly shelf at the speed I desired. Once I obtained this speed, I then was able to put it into a new code where I controlled the speed of the shelf. After successfully figuring out this code, I then began to experiment with it, by adding buttons to control directoin, and some to act as on/off switches. The resulting final code uses buttons to control the direction, but the speed is fixed at the value's we were able to obtain from part one. The code is below.</li>
-              <pre>
+              <h4> First step: Making the parts in autocad</i></h4>
+              <li>  For the first step, I used Autodesk Fusion to make the individual parts of my moving sculpture. Because I knew I wanted to laser cut in acrylic, When making slits/holes I measured how thick the acrylic was and based on how tight I wanted the construction to fit together, I used varying kerf values accordingly. In th end, for press fit, my first pieces printer perfectly! I was glad that I didn't need to use any additional acrylic for the base pieces as these were the ones that took up the most surface area.</li>
+              <li>  Design Limitations: When desgining this part, because I was laser cutting it and not 3d printing it, I knew there had to be certain constraints. For example, at first I wanted the shelves to be round, but after thinking hard and asking how I would make sure my jewelry doesnt fall off the shelf, there was no other option but to create a box like structure with an open top. Because I wanted two layers, one for larger jewelry and the top one for smaller earrings that could hang directly from the acrylic, only one box was needed.</li>
 
-              <code> 
-                bool dir = LOW;
-                
-                void setup() {
-                  // put your setup code here, to run once:
-                  pinMode(2, INPUT_PULLUP);
-                  pinMode(5, INPUT_PULLUP);
-                  pinMode(3, OUTPUT);
-                  pinMode(4, OUTPUT);
-                  analogWrite(3, 0);   // start with the motors off 
-                  digitalWrite(4, LOW);
-                }
-                
-                void loop() {
-                  // put your main code here, to run repeatedly:
-                  int sensorVal = digitalRead(2);
-                  int button2 = digitalRead(5);
-                  delay(1);
-                
-                   if (sensorVal == LOW) {
-                    analogWrite(3, 190); 
-                //    digitalWrite(4, HIGH);
-                  } else {
-                    analogWrite(3, 0);
-                  }
-                    if (button2 == LOW) {
-                   digitalWrite(4, HIGH);  // switch direction
-                   analogWrite(3, 255-190); // here the logic for speed is inverted   
-                  } else {
-                   digitalWrite(4, LOW);
-                
-                  }
-                }</code>
-              </pre>
-              
+              <br>
+              <p> Below is a view of all of the parts from this file. As you can see there is a lot! I created two planes, one for the base pieces and another for the supporting pieces that added the height and connected to the motor. This helped me organize what needed to be changed or added by only viewing one plane at a time.</p>
+              <div class="swiper-slide">
+                <img src="assets/week3/3dview.png" alt="">
+
+                <!-- <img src="assets/intro1/dressfinal.mov" alt=""> -->
+              </div>
+           <br>
+           <p>As I previously mentioned, this is the base view. Here you can see the sketches and extrusions of all of the base parts.</p>
+           <div class="swiper-slide">
+            <img src="assets/week3/baseview.png" alt="">
+
+            <!-- <img src="assets/intro1/dressfinal.mov" alt=""> -->
+          </div>
+          <br>
+           <p>Lastly, here is the view of all of the supporting parts. This includes the pieces that added the height, as welll as the one that connected to the motor. Becuase these had to be contiuously altered in some cases, and served a different function than the base plates, I created a different plane to visualize them in.</p>
+           <div class="swiper-slide">
+            <img src="assets/week3/view2.png" alt="">
+
+            <!-- <img src="assets/intro1/dressfinal.mov" alt=""> -->
+          </div>
+
+              <h4> Second step, slight remodel and issues I had</h4>
+              <li> Although I had no issues with how the pieces fit together, I, like many others, had issues on how the object was attactched to the motor. At first, I envisioned a center axis piece that would connect directly to the motor, but because the acrylic had a certain dimension, you could not cut both a center axis and a hole for the motor in the same piece. At first, I cut out an axis piece and tried to create a hole with the drill bit, which worked nice and I did not damage the acrylic, but becuase the fit wasn't precise I could not fit the motor onto it.  The only option I had was to print a small piece that would fit the motor, and then directly attach the rest of the parts onto that. However, becuase it was a tall sculpture, I had issues getting it completely level. The following video is a first iteration of the piece and how it was unstable and rotating in a very crazy way.</li>
+              <video width="400" controls>
+                <source src="/Users/shavonnajackson/Documents/GitHub/PHYSCI-70/assets/week3/height.mp4"type=video/mp4>
+              </video>
+              <br>
+              <li> In order to fix this, and to get the resulting video you saw up top, I drastically reduced the amount of space between the bottom and top layers, as the stand did not need that large of a gap, and reducing this would diminish the amount of freedom the device would have to spin out of its center. This helped tremendously as you can see through the resulting video. Another decisiion that I made to stablize this scultpure is to remove the distance between the base plate and the motor. Initially I thought I needed a small axis piece to attach the bottom shelf to the motor, but after a great deal of trial and error, I realized I could simply attach it by itself. This did lead to a higher friction which would cause issues later down the line, but it was a much better method than any other I was able to try. This led to the final piece you see at the top! It took well over 2 days and I learned so much about laser cutting, fusion, and how to make things (work).</li>
           </div>
 
         </div>
