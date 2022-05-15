@@ -102,10 +102,10 @@
       <div class="container">
 
         <div class="d-flex justify-content-between align-items-center">
-          <h2>Week 3: Moving Sculpture!</h2>
+          <h2>Week 6: Input Devices!</h2>
           <ol>
             <li><a href="index.html">Home</a></li>
-            <li>Week 3: Moving Sculpture!</li>
+            <li>Week 6: Input Devices!</li>
           </ol>
         </div>
 
@@ -139,50 +139,103 @@
             </div> --> 
             <div>
             <div class="portfolio-description">
-              <h2>Making a rotating jewelry stand!</h2>
+              <h2> Making a capactive sensor.</h2>
               <p>
-                For this week, I wanted to make a stand that would slowly revolve and hold all my jewlery and accessories. Although this was a journey, and the final product definitely spins way too fast, it works! The video for it is pictured below.
-              </p>
+                For this week, part of the assignment was to make a capactive sensor. To do this, I used copper tape, foam, cardboard, and the materials with my arduino board. I wanted to sense force from when I would press the two carboard pieces together (with the foam slit in between) to determine the force of the pressure. It was a fun experience and the video of it working, along with the graph it produced is below.
               <br>
+              <pre>
+                <code>
+
+long result;   //variable for the result of the tx_rx measurement.
+int analog_pin = A3;
+int tx_pin = 4;
+void setup() {
+  pinMode(tx_pin, OUTPUT);     //Pin 4 provides the voltage step
+  Serial.begin(9600);
+}
+
+
+long tx_rx() {        //Function to execute rx_tx algorithm and return a value
+  //that depends on coupling of two electrodes.
+  //Value returned is a long integer.
+  int read_high;
+  int read_low;
+  int diff;
+  long int sum;
+  int N_samples = 100;    //Number of samples to take.  Larger number slows it down, but reduces scatter.
+
+  sum = 0;
+
+  for (int i = 0; i < N_samples; i++) {
+    digitalWrite(tx_pin, HIGH);             //Step the voltage high on conductor 1.
+    read_high = analogRead(analog_pin);        //Measure response of conductor 2.
+    delayMicroseconds(100);            //Delay to reach steady state.
+    digitalWrite(tx_pin, LOW);              //Step the voltage to zero on conductor 1.
+    read_low = analogRead(analog_pin);         //Measure response of conductor 2.
+    diff = read_high - read_low;       //desired answer is the difference between high and low.
+    sum += diff;                       //Sums up N_samples of these measurements.
+  }
+  return sum;
+}                         //End of tx_rx function.
+
+
+void loop() {
+
+  result = tx_rx();
+  Serial.println(result);
+  //delay(100);
+
+
+
+}
+                </code>
+              </pre>
               <video width="400" controls>
-                <source src="assets/week3/spinning.mp4"type=video/mp4>
+                <source src="assets/week6/week6movie.mp4"type=video/mp4>
               </video>
            
                 <!-- <img src="assets/intro1/dojafinal.mov" alt=""> -->
-              <h4> First step: Making the parts in autocad</i></h4>
-              <li>  For the first step, I used Autodesk Fusion to make the individual parts of my moving sculpture. Because I knew I wanted to laser cut in acrylic, When making slits/holes I measured how thick the acrylic was and based on how tight I wanted the construction to fit together, I used varying kerf values accordingly. In th end, for press fit, my first pieces printer perfectly! I was glad that I didn't need to use any additional acrylic for the base pieces as these were the ones that took up the most surface area.</li>
-              <li>  Design Limitations: When desgining this part, because I was laser cutting it and not 3d printing it, I knew there had to be certain constraints. For example, at first I wanted the shelves to be round, but after thinking hard and asking how I would make sure my jewelry doesnt fall off the shelf, there was no other option but to create a box like structure with an open top. Because I wanted two layers, one for larger jewelry and the top one for smaller earrings that could hang directly from the acrylic, only one box was needed.</li>
+              <h4> For the next sensing device, I used a photoresistor to control LEDs</i></h4>
+              <li>  For this, as you can see in the video, as I use my flashlight to bring light to the photoresistor, the light shuts off. Alhtough this is not in the video, if I were to completely cover the photoresistor so that it is completely dark, both lights would come on as a result. You can see this in the code below.</li>
+             <br>
+             <video width="400" controls>
+              <source src="assets/week6/week6light.mp4"type=video/mp4>
+            </video>
+             <pre>
+                <code>  int light = 0; // store the current light value
 
-              <br>
-              <p> Below is a view of all of the parts from this file. As you can see there is a lot! I created two planes, one for the base pieces and another for the supporting pieces that added the height and connected to the motor. This helped me organize what needed to be changed or added by only viewing one plane at a time.</p>
-              <div class="swiper-slide">
-                <img src="assets/week3/3dview.png" alt="">
-
-                <!-- <img src="assets/intro1/dressfinal.mov" alt=""> -->
-              </div>
-           <br>
-           <p>As I previously mentioned, this is the base view. Here you can see the sketches and extrusions of all of the base parts.</p>
-           <div class="swiper-slide">
-            <img src="assets/week3/baseview.png" alt="">
-
-            <!-- <img src="assets/intro1/dressfinal.mov" alt=""> -->
-          </div>
-          <br>
-           <p>Lastly, here is the view of all of the supporting parts. This includes the pieces that added the height, as welll as the one that connected to the motor. Becuase these had to be contiuously altered in some cases, and served a different function than the base plates, I created a different plane to visualize them in.</p>
-           <div class="swiper-slide">
-            <img src="assets/week3/view2.png" alt="">
-
-            <!-- <img src="assets/intro1/dressfinal.mov" alt=""> -->
-          </div>
-
-              <h4> Second step, slight remodel and issues I had</h4>
-              <li> Although I had no issues with how the pieces fit together, I, like many others, had issues on how the object was attactched to the motor. At first, I envisioned a center axis piece that would connect directly to the motor, but because the acrylic had a certain dimension, you could not cut both a center axis and a hole for the motor in the same piece. At first, I cut out an axis piece and tried to create a hole with the drill bit, which worked nice and I did not damage the acrylic, but becuase the fit wasn't precise I could not fit the motor onto it.  The only option I had was to print a small piece that would fit the motor, and then directly attach the rest of the parts onto that. However, becuase it was a tall sculpture, I had issues getting it completely level. The following video is a first iteration of the piece and how it was unstable and rotating in a very crazy way.</li>
-              <br>
-              <video width="400" controls>
-                <source src="assets/week3/height.mp4"type=video/mp4>
-              </video>
-              <br>
-              <li> In order to fix this, and to get the resulting video you saw up top, I drastically reduced the amount of space between the bottom and top layers, as the stand did not need that large of a gap, and reducing this would diminish the amount of freedom the device would have to spin out of its center. This helped tremendously as you can see through the resulting video. Another decisiion that I made to stablize this scultpure is to remove the distance between the base plate and the motor. Initially I thought I needed a small axis piece to attach the bottom shelf to the motor, but after a great deal of trial and error, I realized I could simply attach it by itself. This did lead to a higher friction which would cause issues later down the line, but it was a much better method than any other I was able to try. This led to the final piece you see at the top! It took well over 2 days and I learned so much about laser cutting, fusion, and how to make things (work).</li>
+                  void setup() {
+                      // put your setup code here, to run once:
+                      Serial.begin(9600); //configure serial to talk to computer
+                      pinMode(13, OUTPUT); // configure digital pin 13 as an output
+                      pinMode(12, OUTPUT); // configure digital pin 12 as an output
+                  }
+                  
+                  void loop() {
+                      // put your main code here, to run repeatedly:
+                      light = analogRead(A0); // read and save value from PR
+                      
+                      Serial.println(light); // print current light value
+                   
+                      if(light > 450) { // If it is bright...
+                  //        Serial.println("It is quite light!");
+                          digitalWrite(13,LOW); //turn left LED off
+                          digitalWrite(12,LOW); // turn right LED off
+                      }
+                      else if(light > 229 && light < 451) { // If it is average light...
+                  //        Serial.println("It is average light!");
+                         digitalWrite(13, HIGH); // turn left LED on
+                         digitalWrite(12,LOW);  // turn right LED off
+                      }
+                      else { // If it's dark...
+                  //        Serial.println("It is pretty dark!");
+                          digitalWrite(13,HIGH); // Turn left LED on
+                          digitalWrite(12,HIGH); // Turn right LED on
+                      }
+                      delay(1000); // don't spam the computer!
+                  }</code>
+              </pre>
+              
           </div>
 
         </div>
